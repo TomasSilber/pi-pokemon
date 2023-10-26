@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
     },
     imagen: {
       type: DataTypes.STRING,
-      allowNull:false
+      allowNull:true
     },
     hp: {
       type: DataTypes.INTEGER,
