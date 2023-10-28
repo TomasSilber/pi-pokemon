@@ -3,6 +3,7 @@ const { GETPokeid } = require ("../controllers/getpokeid")
 const { GETAllPokemons } = require ("../controllers/getallpokes")
 const {GETPokename} = require ("../controllers/getpokename")
 const {createPokemon} = require ("../controllers/postpoke")
+const {GETTypes} = require ("../controllers/gettypes")
 
 
 // Importar todos los routers;
@@ -13,11 +14,11 @@ const router = Router();
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
-// router.get('/pokemon/4', GETpokeid);
 router.get("/pokemon/name", GETPokename)
 router.get("/pokemon/:id", GETPokeid)
 router.get("/pokemon", GETAllPokemons)
 router.post("/pokemon", createPokemon)
+router.get("/types", GETTypes)
 
 
 
