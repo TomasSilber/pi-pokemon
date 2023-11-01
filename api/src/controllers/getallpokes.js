@@ -24,7 +24,7 @@ const GETAllPokemons = async (req, res) => {
           hp: pokemonData.data.stats.find((stat) => stat.stat.name === "hp").base_stat,
           attack: pokemonData.data.stats.find((stat) => stat.stat.name === "attack").base_stat,
           defense: pokemonData.data.stats.find((stat) => stat.stat.name === "defense").base_stat,
-          type: pokemonData.data.types.map((type)=>type.type.name)
+          types: pokemonData.data.types.map((type)=>type.type.name)
         };
       })
     );

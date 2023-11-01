@@ -4,9 +4,9 @@ const { Pokemon, Type } = require('../db');
 
 const createPokemon = async (req, res) => {
   try {
-    const { name, type, hp, attack, defense, image } = req.body;
+    const { name, types, hp, attack, defense, image } = req.body;
 
-    if (!name || !type || !hp || !attack || !defense || !image) {
+    if (!name || !types || !hp || !attack || !defense || !image) {
       return res.status(400).json({ error: 'Por favor, proporciona todos los datos necesarios para crear un Pokémon.' });
     }
 
@@ -21,11 +21,11 @@ const createPokemon = async (req, res) => {
 
     const typeRecords = await Type.findAll({ // Buscar y relacionar los tipos con el Pokémon;
       where: {
-        name: type,
+        name: types,
       },
     });
 
-    if (typeRecords.length === type.length) {
+    if (typeRecords.length === types.length) {
 
       await newPokemon.setTypes(typeRecords); // Relacionar los tipos encontrados con el nuevo Pokémon;
 
