@@ -28,9 +28,22 @@ const GETPokename = async (req, res) => {
       ],
     });
 
-    if (pokeDB.length>0) {
-      return res.status(200).json(pokeDB);
+    if (pokeDB.length > 0) {
+      const pokeDBFiltered = {
+        id: pokeDB[0].id,  // Obtén el primer Pokémon de la matriz (si hay varios)
+        name: pokeDB[0].name,
+        image: pokeDB[0].image,
+        hp: pokeDB[0].hp,
+        attack: pokeDB[0].attack,
+        defense: pokeDB[0].defense,
+        types: pokeDB[0].types.map((type) => type.name).join(' / ')
+      };
+      
+      return res.status(200).json(pokeDBFiltered);
     }
+
+
+    
 
     // Si no se encuentra en la base de datos, busca en la API de PokeAPI
     const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${lowercaseName}`);

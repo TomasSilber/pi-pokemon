@@ -15,9 +15,21 @@ const GETPokeid = async (req, res) => {
             },
           ],
       });
-      if (pokemonFromDB.id) {
-          return res.status(200).json(pokemonFromDB);
+      
+      if (pokemonFromDB) {
+        const pokeDBFiltered = {
+          id: pokemonFromDB.id,
+          name: pokemonFromDB.name,
+          image: pokemonFromDB.image,
+          hp: pokemonFromDB.hp,
+          attack: pokemonFromDB.attack,
+          defense: pokemonFromDB.defense,
+          types: pokemonFromDB.types.map((type)=>type.name).join(` / `)
+        };
+        
+        return res.status(200).json(pokeDBFiltered);
       }
+    
   }
 
     const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -31,7 +43,7 @@ const GETPokeid = async (req, res) => {
       hp: pokemonData.stats.find((stat) => stat.stat.name === "hp").base_stat,
       attack: pokemonData.stats.find((stat) => stat.stat.name === "attack").base_stat,
       defense: pokemonData.stats.find((stat) => stat.stat.name === "defense").base_stat,
-      type: pokemonData.types.map((type)=>type.type.name)     
+      types: pokemonData.types.map((type)=>type.type.name).join(` / `)     
     };
 
 
