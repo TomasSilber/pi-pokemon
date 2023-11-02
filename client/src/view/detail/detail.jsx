@@ -13,7 +13,6 @@ function Detail() {
 
     return () => dispatch(CleanDetail())
   }, [params?.id])
-  console.log(pokeDetail.types);
 
   
   return (
@@ -23,7 +22,7 @@ function Detail() {
       <p>Health: {pokeDetail?.hp} </p>
       <p>Attack: {pokeDetail?.attack} </p>
       <p>Defense: {pokeDetail?.defense} </p>
-      <p>Type: {pokeDetail?.type} </p>
+      <p>Type: {pokeDetail?.types} </p>
       <img src={pokeDetail?.image} alt={pokeDetail?.name} />
 
     </div>
