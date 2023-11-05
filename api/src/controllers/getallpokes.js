@@ -1,6 +1,6 @@
 const { Pokemon, Type } = require ("../db")
 const axios = require("axios");
-const URL = "http://pokeapi.co/api/v2/pokemon";
+const URL = "http://pokeapi.co/api/v2/pokemon?limit=60";
 
 const GETAllPokemons = async (req, res) => {
   
@@ -51,14 +51,14 @@ const GETAllPokemons = async (req, res) => {
 
     const respuestafinal= [...pokeDBFiltered, ...allPokemons]
    
-    if(respuestafinal){
-      const filteredfinalanswer = respuestafinal.filter((pokemon)=>pokemon.name.toLowerCase());
-      if(filteredfinalanswer.length===0){
-        return res.status(400).json("No se encontró ese Pokémon")
-      } else{
-        return res.status(200).json(filteredfinalanswer)
-      }
-    }
+    // if(respuestafinal){
+    //   const filteredfinalanswer = respuestafinal.filter((pokemon)=>pokemon.name.toLowerCase());
+    //   if(filteredfinalanswer.length===0){
+    //     return res.status(400).json("No se encontró ese Pokémon")
+    //   } else{
+    //     return res.status(200).json(filteredfinalanswer)
+    //   }
+    // }
     return res.status(200).json(respuestafinal);
 } catch (error) {
   return res.status(500).send(error.message);

@@ -1,7 +1,4 @@
-const axios = require('axios');
-const { Pokemon, Type } = require('../db');
-const { Op } = require('sequelize');
-
+const { pokeStartsWith } = require('./pokeStartsWith');
 
 const GETPokename = async (req, res) => {
   try {
@@ -13,62 +10,19 @@ const GETPokename = async (req, res) => {
 
     const lowercaseName = name.toLowerCase();
 
-    // Primero, intenta buscar el Pokémon en la base de datos
-    const pokeDB = await Pokemon.findAll({
-      where: {
-        name: {
-          [Op.iLike]: `%${lowercaseName}%`, // Búsqueda insensible a mayúsculas y minúsculas
-        },
-      },
-      include: [
-        {
-          model: Type,
-          through: { attributes: [] }, 
-        },
-      ],
-    });
+    const PokeStartWith = await pokeStartsWith()
 
-    if (pokeDB.length > 0) {
-      const pokeDBFiltered = {
-        id: pokeDB[0].id,  // Obtén el primer Pokémon de la matriz (si hay varios)
-        name: pokeDB[0].name,
-        image: pokeDB[0].image,
-        hp: pokeDB[0].hp,
-        attack: pokeDB[0].attack,
-        defense: pokeDB[0].defense,
-        types: pokeDB[0].types.map((type) => type.name).join(' / ')
-      };
-      
-      return res.status(200).json(pokeDBFiltered);
+    const Pokeprueba = PokeStartWith.filter(pokemon => {
+      const newName = pokemon.name.toLowerCase()
+      return newName.startsWith(lowercaseName)
+    })
+    if (Pokeprueba.length) {
+      return res.status(200).json(Pokeprueba)
     }
 
-
-    
-
-    // Si no se encuentra en la base de datos, busca en la API de PokeAPI
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${lowercaseName}`);
-
-    if (response.status === 200) {
-      const pokemonData = response.data;
-
-      const pokemonDetails = {
-        id: pokemonData.id,
-        name: pokemonData.name,
-        image: pokemonData.sprites.front_default,
-        hp: pokemonData.stats.find((stat) => stat.stat.name === 'hp').base_stat,
-        attack: pokemonData.stats.find((stat) => stat.stat.name === 'attack').base_stat,
-        defense: pokemonData.stats.find((stat) => stat.stat.name === 'defense').base_stat,
-        types: pokemonData.types.map((type) => type.type.name),
-      };
-      
-      
-
-      return res.status(200).json(pokemonDetails);
-    } else {
-      return res.status(404).json({ error: 'Pokémon no encontrado en la API.' });
-    }
+    res.status(400).json({ error: 'Error en la búsqueda de Pokémon.' })
   } catch (error) {
-    return res.status(500).json({ error: 'Error en la búsqueda de Pokémon.' });
+    res.status(500).json({ error: 'Error en la búsqueda de Pokémon.' });
   }
 };
 
