@@ -1,8 +1,9 @@
-import { GET_ALL_POKEMONS, GET_POKE_DETAIL, CLEAN_DETAIL } from "../actions/action-types"
+import { GET_ALL_POKEMONS, GET_POKE_DETAIL, CLEAN_DETAIL, SEARCH_POKEMON } from "../actions/action-types"
 
 const initialState ={
     allPokes: [],
-    pokeDetail: {}
+    pokeDetail: {},
+    allPokesCopy: []
 }
 
 const reducer = ( state = initialState, action)=>{
@@ -10,7 +11,8 @@ const reducer = ( state = initialState, action)=>{
         case GET_ALL_POKEMONS:
         return{
             ...state,
-            allPokes: action.payload
+            allPokes: action.payload,
+            allPokesCopy: action.payload
         }
         case GET_POKE_DETAIL:
             return{
@@ -21,6 +23,11 @@ const reducer = ( state = initialState, action)=>{
             return{
                 ...state,
                 pokeDetail: {}
+            }
+        case SEARCH_POKEMON:
+            return{
+                ...state,
+                allPokes: action.payload
             }
         default:
             return {...state}
