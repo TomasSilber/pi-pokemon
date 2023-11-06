@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import validation from "./validation"
-import axios from "axios"
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { CreatePokemon } from "../../redux/actions/actions"
+import { CreatePokemon, GetTypes } from "../../redux/actions/actions"
 
 const Form = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
     const [input, setInput] = useState({
         name: "",
         image: "",
@@ -18,7 +18,7 @@ const Form = () => {
     })
 
     const [errors, setErrors] = useState({})
-    const [pokemonTypes, setPokemonTypes] = useState([]);
+    
 
     const handlechange = (event) =>{
         setInput({
@@ -34,20 +34,12 @@ const Form = () => {
         navigate("/home")
         
     }
-    
+    const getTypes = useSelector((state)=> state.types)
     useEffect(() => {
-        const fetchPokemonTypes = async () => {
-            try {
-                const response = await axios.get("http://localhost:3001/types");
-                
-                setPokemonTypes(response.data);
-            } catch (error) {
-                console.error("Error al obtener tipos de Pokémon:", error);
-            }
-        };
+        dispatch(GetTypes());
+      }, []);
+
     
-        fetchPokemonTypes();
-    }, []);
 
     const handleTypeChange = (event) => {
         const selectedType = event.target.value;
@@ -93,8 +85,8 @@ const Form = () => {
 
             <br />
             <label htmlFor="types">Types (select up to 2):</label>
-                {pokemonTypes.map((type) => (
-                    <div key={type.id}>
+                {getTypes.map((type) => (
+                    <div key={type.name} >
                         <input
                             type="checkbox"
                             name="type"
