@@ -1,4 +1,4 @@
-import  "./cards.modules.css"
+import "./cards.modules.css"
 import { useSelector, useDispatch } from "react-redux";
 import { getAllPokemons } from "../../redux/actions/actions";
 import { useEffect } from "react";
@@ -10,14 +10,17 @@ import Filterbar from "../filter/filter";
 import FilterBarType from "../filter/filter.type";
 
 
-
 const Cards = ({ currentPage, setCurrentPage }) => {
   const dispatch = useDispatch();
   const allPokes = useSelector((state) => state.allPokes);
 
   useEffect(() => {
-    dispatch(getAllPokemons());
+    dispatch(getAllPokemons())
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [allPokes]);
 
   const PokesPerPage = 12;
 
@@ -30,25 +33,40 @@ const Cards = ({ currentPage, setCurrentPage }) => {
   };
 
   return (
-    <div className="card-list">
+    <div>
+      <div className="header">
         <Searchbar></Searchbar>
+      </div>
+
+      <header className="header-filter">
+        <p>Origin: </p>
         <Filterbar></Filterbar>
+        <p>Type: </p>
         <FilterBarType></FilterBarType>
+        <p>Order: </p>
         <Orderbar></Orderbar>
-        {allPokes.length>0 ? <Pagination
+      </header>
+
+      <div className="pagination">
+        {allPokes.length > 0 ? <Pagination
           currentPage={currentPage}
           totalPages={Math.ceil(allPokes.length / PokesPerPage)}
           onPageChange={paginate}
-        />: null}
-      {currentPokes?.map((pokemon) => (
-        <Card
-          key={pokemon.id}
-          id={pokemon.id}
-          name={pokemon.name}
-          image={pokemon.image}
-          types={pokemon.types}
-        />
-      ))}
+        /> : null}
+      </div>
+
+      <div className="cartas">
+        <main className="card-list">
+          {currentPokes?.map((pokemon) => (
+            <Card
+              key={pokemon.id}
+              id={pokemon.id}
+              name={pokemon.name}
+              image={pokemon.image}
+              types={pokemon.types}
+            />))}
+        </main>
+      </div>
     </div>
   );
 };

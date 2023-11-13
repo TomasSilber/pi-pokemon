@@ -1,13 +1,14 @@
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { SearchPokemon, getAllPokemons } from "../../redux/actions/actions"
-
+import "./searchbar.modules.css"
 
 
 const Searchbar = () => {
 
     const dispatch = useDispatch()
     const [input, setInput] = useState("")
+    
 
     const handlechange = (event) => {
         setInput(event.target.value)
@@ -15,9 +16,9 @@ const Searchbar = () => {
 
     return (
         <div>
-            <input onChange={handlechange} type="search" value={input} />
-            <button onClick={() => dispatch(SearchPokemon(input))}> Search </button>
-            <button onClick={() => dispatch(getAllPokemons())}> Reset </button>
+            <input onChange={handlechange} type="search" value={input} placeholder="Search Pokemon" className="form-group"/>
+            <button onClick={() => dispatch(SearchPokemon(input))} className="btn-search" > Search </button>
+            <button onClick={() => dispatch(getAllPokemons())} className="btn-search"> Reset </button>
 
         </div>
     )

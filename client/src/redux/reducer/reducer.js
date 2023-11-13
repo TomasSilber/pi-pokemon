@@ -1,3 +1,4 @@
+import { useState } from "react"
 import {
     GET_ALL_POKEMONS, GET_POKE_DETAIL, CLEAN_DETAIL, SEARCH_POKEMON,
     ORDER_POKEMON, FILTER_POKEMON, FILTER_TYPE_POKEMON, GET_TYPES} from "../actions/action-types"
@@ -9,6 +10,7 @@ const initialState = {
     allPokesCopy: [],
     types: []
 }
+    
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -64,22 +66,27 @@ const reducer = (state = initialState, action) => {
             }
 
         case FILTER_POKEMON:
-            let backUpFilter = [...state.allPokesCopy]
-            let PokesFiltered = []
-
-            if (action.payload === "AllPokemons") {
-                PokesFiltered = backUpFilter
-            }
-            else if (action.payload === "PokesFromApi") {
-                PokesFiltered = backUpFilter.filter((pokemon) => !isNaN(pokemon.id))
-            }
-            else if (action.payload === "PokesFromBD") {
-                PokesFiltered = backUpFilter.filter((pokemon) => isNaN(pokemon.id))
-            }
-            return {
-                ...state,
-                allPokes: PokesFiltered
-            }
+            
+           
+                let backUpFilter = [...state.allPokesCopy]
+                let PokesFiltered = []
+    
+                if (action.payload === "AllPokemons") {
+                    PokesFiltered = backUpFilter
+                }
+                else if (action.payload === "PokesFromApi") {
+                    PokesFiltered = backUpFilter.filter((pokemon) => !isNaN(pokemon.id))
+                }
+                else if (action.payload === "PokesFromBD") {
+                    PokesFiltered = backUpFilter.filter((pokemon) => isNaN(pokemon.id))
+                }
+                return {
+                    ...state,
+                    allPokes: PokesFiltered
+                }
+                
+            
+            
         
         case FILTER_TYPE_POKEMON:        
             

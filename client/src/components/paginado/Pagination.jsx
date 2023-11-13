@@ -1,24 +1,24 @@
-import style from "./Pagination.modules.css"
+import "./Pagination.modules.css"
 
 
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     return (
-        <div className={style.container}>
+        <div className="container">
             <button
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className={style.button}
+                className="btn-pagination"
             >
                 &#8249; 
             </button>
-            <span className={style.text}>
+            <span className="text">
                 {currentPage} de {totalPages}
             </span>
             <button
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className={style.button}
+                className="btn-pagination"
             >
                 &#8250; 
             </button>

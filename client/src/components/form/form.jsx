@@ -1,6 +1,7 @@
+import "./form.modules.css"
 import { useEffect, useState } from "react"
 import validation from "./validation"
-import {useDispatch, useSelector} from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { CreatePokemon, GetTypes } from "../../redux/actions/actions"
 
@@ -18,97 +19,114 @@ const Form = () => {
     })
 
     const [errors, setErrors] = useState({})
-    
 
-    const handlechange = (event) =>{
+
+    const handlechange = (event) => {
         setInput({
             ...input,
             [event.target.name]: event.target.value
-        })   
-         setErrors(validation(input))     
+        })
+        setErrors(validation(input))
     }
 
-    const handleSubmit = (event) =>{
-        event.preventDefault()      
+    const handleSubmit = (event) => {
+        event.preventDefault()
         dispatch(CreatePokemon(input))
         navigate("/home")
-        
+
     }
-    const getTypes = useSelector((state)=> state.types)
+    const getTypes = useSelector((state) => state.types)
     useEffect(() => {
         dispatch(GetTypes());
-      }, []);
+    }, []);
 
-    
+
 
     const handleTypeChange = (event) => {
         const selectedType = event.target.value;
-    
+
         // Si ya se seleccionaron 2 tipos, no se permite seleccionar más
         if (input.types.length === 2 && !input.types.includes(selectedType)) {
-          return;
+            return;
         }
-    
+
         // Agregar o eliminar el tipo seleccionado
         const updatedTypes = input.types.includes(selectedType)
-          ? input.types.filter((type) => type !== selectedType)
-          : [...input.types, selectedType];
-    
+            ? input.types.filter((type) => type !== selectedType)
+            : [...input.types, selectedType];
+
         setInput({ ...input, types: updatedTypes });
-      };
+    };
 
-    return(
-        <form onSubmit={handleSubmit} >
-            <label htmlFor="name">Name: </label>
-            <input onChange={handlechange} type="name" name="name" value={input.name} />
-            {errors.name}
-                       
-            <br />    
-            <label htmlFor="image">Image URL: </label>
-            <input onChange={handlechange} type="text" name="image" value={input.image} />
-            {errors.image}
+    return (
+        <div>
+            <div className="form-header"></div>
+            <form onSubmit={handleSubmit} >
+                <div className="container-all">
+                    <div className="container-inputs">
+                        <label htmlFor="name">Name: </label>
+                        <input onChange={handlechange} type="name" name="name" value={input.name} />
+                        {errors.name}
 
-            <br />
-            <label htmlFor="HealthPoints">Health Points: </label>
-            <input onChange={handlechange} type="number" name="hp" value={input.hp}/>
-            {errors.hp}
+                        <br />
+                        <label htmlFor="image">Image URL: </label>
+                        <input onChange={handlechange} type="text" name="image" value={input.image} />
+                        {errors.image}
 
-            <br />
-            <label htmlFor="Attack">Attack: </label>
-            <input onChange={handlechange} type="number"name="attack" value={input.attack}/>
-            {errors.attack}
+                        <br />
+                        <label htmlFor="HealthPoints">Health Points: </label>
+                        <input onChange={handlechange} type="number" name="hp" value={input.hp} />
+                        {errors.hp}
 
-            <br />
-            <label htmlFor="Defense">Defense: </label>
-            <input onChange={handlechange} type="number" name="defense" value={input.defense}/>
-            {errors.defense}
+                        <br />
+                        <label htmlFor="Attack">Attack: </label>
+                        <input onChange={handlechange} type="number" name="attack" value={input.attack} />
+                        {errors.attack}
 
-            <br />
-            <label htmlFor="types">Types (select up to 2):</label>
-                {getTypes.map((type) => (
-                    <div key={type.name} >
-                        <input
-                            type="checkbox"
-                            name="type"
-                            value={type.name}
-                            checked={input.types.includes(type.name)}
-                            onChange={handleTypeChange}
-                            disabled={
-                                input.types.length === 2 && !input.types.includes(type.name)
-                            }
-                        />
-                {type.name}
-            </div>
-      ))}
+                        <br />
+                        <label htmlFor="Defense">Defense: </label>
+                        <input onChange={handlechange} type="number" name="defense" value={input.defense} />
+                        {errors.defense}
+                    </div>
 
-            <br />
-            <button 
-            type="submit" 
-            disabled=
-            {input.name==="" || input.image==="" || input.hp==="" || input.attack==="" || input.defense==="" || input.types<1} 
-             >Submit</button>
+                    <div className="container-types">
+                        <br />
+                        <div>
+                            <label htmlFor="types">Types (select up to 2):</label> <br />
+                        </div>
+                        <div className="types-checks">
+                            {getTypes.map((type) => (
+                                <div key={type.name} >
+                                    <input
+                                        type="checkbox"
+                                        name="type"
+                                        value={type.name}
+                                        checked={input.types.includes(type.name)}
+                                        onChange={handleTypeChange}
+                                        disabled={
+                                            input.types.length === 2 && !input.types.includes(type.name)
+                                        }
+                                    />
+                                    {type.name}
+                                </div>
+                            ))}
 
-        </form>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div className="btn-form">
+                    <button 
+                        type="submit"
+                        disabled=
+                        {input.name === "" || input.image === "" || input.hp === "" || input.attack === "" || input.defense === "" || input.types < 1 || errors.name || errors.image || errors.hp || errors.attack || errors.defense}
+                    >Submit</button>
+
+                </div>
+
+            </form>
+        </div>
     )
 }
 

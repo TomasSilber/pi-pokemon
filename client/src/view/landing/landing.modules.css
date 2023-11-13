@@ -1,0 +1,22 @@
+
+.container-landing{
+    background-image: url(./273289.jpg);
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 56.7vw;
+    justify-content: center;
+}
+
+
+.bienvenida{
+    display: flex;
+    justify-content: center;
+}
+
+.bienvenida h1{
+    width: 200%;
+}

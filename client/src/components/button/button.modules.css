@@ -1,4 +1,4 @@
-.btn-pagination {
+.btn-general{
     border: none;
     outline: none;
     border-radius: 25px;
@@ -8,4 +8,9 @@
     letter-spacing: 2px;
     background-color: #04778fc9;
     color: #fcfafa;
+}
+
+.btn-general:hover{
+    background-color: #fcfafa;
+    color: #04788f;
 }
