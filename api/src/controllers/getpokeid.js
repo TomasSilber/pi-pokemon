@@ -4,9 +4,9 @@ const { Pokemon, Type } = require("../db");
 const GETPokeid = async (req, res) => {
   try {
     const { id } = req.params;
-
+    
     if (id.length > 4) {
-      const pokemonFromDB = await Pokemon.findOne({ // Buscamos el Pokémon en la base de datos;
+      const pokemonFromDB = await Pokemon.findOne({ // Buscamos el Pokémon en la BDD
           where: { id: id },
           include: [
             {
@@ -32,7 +32,7 @@ const GETPokeid = async (req, res) => {
     
   }
 
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`); // Buscamos en la API
 
     const pokemonData = response.data;
 
@@ -48,6 +48,7 @@ const GETPokeid = async (req, res) => {
 
 
     return res.status(200).json(pokemonDetails);
+    
   } catch (error) {
     return res.status(500).send(error.message);
   }

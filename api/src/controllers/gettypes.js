@@ -14,7 +14,6 @@ try {
 
       for(const poketype of results){
         const findtype = await Type.findOrCreate({where: {name: poketype.name},
-          // defaults: { url: poketype.url }
         })
       }
         return res.status(200).json(results)   

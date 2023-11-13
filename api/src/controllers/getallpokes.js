@@ -1,6 +1,6 @@
 const { Pokemon, Type } = require ("../db")
 const axios = require("axios");
-const URL = "http://pokeapi.co/api/v2/pokemon?limit=151";
+const URL = "http://pokeapi.co/api/v2/pokemon?limit=60";
 
 const GETAllPokemons = async (req, res) => {
   
@@ -12,8 +12,8 @@ const GETAllPokemons = async (req, res) => {
     }
 
     const { results } = response.data;
-
-    const allPokemons = await Promise.all(
+    
+    const allPokemons = await Promise.all( // Busqueda de la API
       results.map(async (pokemon) => {
         const pokemonData = await axios.get(pokemon.url);
 
@@ -29,7 +29,7 @@ const GETAllPokemons = async (req, res) => {
       })
     );
     
-    const Pokecreated = await Pokemon.findAll({
+    const Pokecreated = await Pokemon.findAll({ // Busqueda de la BDD
       include: [ // y le incluye su type
           {
               model: Type,
@@ -38,7 +38,7 @@ const GETAllPokemons = async (req, res) => {
           }]
   } );
   
-  const pokeDBFiltered = Pokecreated.map((pokemon)=>({
+  const pokeDBFiltered = Pokecreated.map((pokemon)=>({// Mapeo de la info de la BDD
     id: pokemon.id,
     name: pokemon.name,
     image: pokemon.image,
@@ -46,20 +46,12 @@ const GETAllPokemons = async (req, res) => {
     attack: pokemon.attack,
     defense: pokemon.defense,
     types: pokemon.types.map((type)=>type.name).join(` / `)
-    
   }))
 
     const respuestafinal= [...pokeDBFiltered, ...allPokemons]
    
-    // if(respuestafinal){
-    //   const filteredfinalanswer = respuestafinal.filter((pokemon)=>pokemon.name.toLowerCase());
-    //   if(filteredfinalanswer.length===0){
-    //     return res.status(400).json("No se encontró ese Pokémon")
-    //   } else{
-    //     return res.status(200).json(filteredfinalanswer)
-    //   }
-    // }
     return res.status(200).json(respuestafinal);
+    
 } catch (error) {
   return res.status(500).send(error.message);
 }
